@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<!-- a) Alterar a linguagem para pt-br -->
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ordenando Valores</title>
+    <!-- b) Incluir a biblioteca ordenando.js em uma tag script -->
+    <script src="ordenando.js"></script>
+</head>
+
+<body>
+    <h1>Ordenando Valores</h1>
+
+    <!-- c) Definir um campo de entrada numérico, com o id valor -->
+    <input type="number" id="valor" placeholder="Digite um valor" /><br />
+
+    <!-- d) Adicionar um botão com texto Adicionar, efetuando a chamada para uma função
+de nome add no clique -->
+    <button onclick="add()">Adicionar</button><br />
+
+    <!-- e) Definir um campo de seleção com as opções Blubble Sort, Selection Sort e Quick
+Sort, com Bubble Sort selecionado por padrão -->
+    <label for="algoritmo">Escolha o algoritmo:</label><br />
+    <select id="algoritmo">
+        <option value="bubble" selected>Bubble Sort</option>
+        <option value="selection">Selection Sort</option>
+        <option value="quick">Quick Sort</option>
+    </select>
+    <br />
+    <!-- f) Adicionar um botão com o texto Ordenar, chamando a função ordenar -->
+    <button onclick="ordenar()">Ordenar</button>
+    <!-- g) Adicionar um botão com o texto Misturar, chamando a função misturar -->
+    <button onclick="misturar()">Misturar</button>
+
+    <!-- h) Definir uma lista (ul) com id valores, sem opções internas -->
+    <ul id="valores"></ul>
+
+    <!-- i) Definir um trecho script, com as funções add, ordenar e misturar, 
+            todas no estilo clássico de escrita do Java Script e sem parâmetros
+    -->
+    <script>
+        function add() {
+            //  a) Capturar o campo de entrada com id valor via getElementById
+            const campoEntrada = document.getElementById('valor').value;
+            //  b) Capturar a lista com id valores
+            const lista = document.getElementById('valores');
+            //  c) Criar uma variável node, com um elemento li definido via createElement
+            const node = document.createElement('li');
+            //  d) Definir um nó de texto, com o valor do campo de entrada, e incluí-lo como filho de node
+            node.innerText = campoEntrada;
+            //  e) Adicionar o elemento node à lista valores
+            lista.appendChild(node);
+            //  limpa o campo de entrada
+            document.getElementById('valor').value = '';
+        }
+
+        function ordenar() {
+            //  a) Capturar a lista de valores e a lista de seleção via getElementById
+            const lista = document.getElementById('valores');
+            const algoritmo = document.getElementById('algoritmo').value;
+            /*  b)  Através do atributo children, obter cada nó da lista de valores e adicionar o
+                    conteúdo do item, convertido para inteiro, em um vetor
+            */
+            const vetor = [];
+            for (var i = 0; i < lista.children.length; i++) {
+                vetor.push(parseInt(lista.children[i].textContent));
+            }
+            /*  d)  Escolher o algoritmo de ordenação adequado, 
+                    a partir do selectedIndex da lista de seleção, e aplicar ao vetor
+            */
+            switch (algoritmo) {
+                case "bubble":
+                    bubble_sort(vetor);
+                    break;
+                case "selection":
+                    selection_sort(vetor);
+                    break;
+                case "quick":
+                    quick_sort(vetor, 0, vetor.length - 1);
+                    break;
+            }
+            /*  e)  Utilizar os operadores map e reduce, do vetor, 
+                    para gerar os novos itens da lista de valores, 
+                    substituindo o conteúdo da lista via innerHTML
+            */
+            const listaLI = vetor.map(function (elem) {
+                return "<li>" + elem.toString() + "</li>"
+            });
+            console.log(listaLI);
+            var textoHTML = listaLI.reduce(function (acc, current) {
+                return acc + current;
+            }, '');
+            lista.innerHTML = textoHTML;
+        }
+
+        function misturar() {
+            //  a)  Capturar a lista de valores via getElementById
+            const lista = document.getElementById('valores');
+            //  b)  Através do atributo children, obter cada nó da lista de valores e 
+            //      adicionar o conteúdo do item, convertido para inteiro, em um vetor
+            const vetor = [];
+            for (var i = 0; i < lista.children.length; i++) {
+                vetor.push(parseInt(lista.children[i].textContent));
+            }
+            //  d)  Aplicar a função shuffle ao vetor
+            shuffle(vetor, 10);
+            console.log(vetor);
+            /*  e)  Utilizar os operadores map e reduce, do vetor, 
+                    para gerar os novos itens da lista de valores, 
+                    substituindo o conteúdo da lista via innerHTML
+            */
+            const listaLI = vetor.map(function (elem) {
+                return "<li>" + elem.toString() + "</li>"
+            });
+            console.log(listaLI);
+            var textoHTML = listaLI.reduce(function (acc, current) {
+                return acc + current;
+            }, '');
+            lista.innerHTML = textoHTML;
+
+        }
+    </script>
+</body>
+
+</html>
