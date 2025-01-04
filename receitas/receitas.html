@@ -1,1 +1,95 @@
-asdfasdfsadf
+<!DOCTYPE html>
+<!-- a) Alterar a linguagem para pt-br -->
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- b) Incluir a folha de estilos do Bootstrap -->
+    <link href="bs533/css/bootstrap.min.css" rel="stylesheet">
+    <!-- c) Incluir o título "Catálogo de Receitas" -->
+    <title>Catálogo de Receitas</title>
+</head>
+
+<body bg-warning onload="preencheCatalogo()">
+    <!-- d) Definir a área principal como container-fluid -->
+    <!-- e) Utilizar fundo bg-warning -->
+    <div class="container-fluid py-4 bg-warning">
+        <h1 class="text-center mb-4">Catálogo de Receitas</h1>
+
+        <!-- f) Definir uma div com apresentação no modo flex-wrap, 
+                identificada como pnlCatalogo, para apresentação dos painéis para as receitas -->
+        <div id="pnlCatalogo" class="flex-wrap row gx-4 gy-4 justify-content-center"></div>
+    </div>
+
+    <!-- g) Acrescentar um trecho em Java Script -->
+    <script>
+        /*  h)  Organizar os dados de receitas em um vetor de elementos JSON, 
+                com os campos título, imagem, preparo e ingredientes, 
+                onde este último é um vetor de elementos texto
+        */
+        const receitas = [
+            {
+                titulo: "Arroz de Couve-Flor",
+                imagem: "img-receita-arroz-couve-flor.png",
+                preparo: "Deixe a couve-flor picada. Adicione os ingredientes e refogue bem. Adicione sal, tampe a panela e deixe cozinhar.",
+                ingredientes: ["Arroz", "Couve-Flor", "Cebola Média", "Azeite"]
+            },
+            {
+                titulo: "Bolo de Café",
+                imagem: "img-receita-bolo-cafe.png",
+                preparo: "Bata o açúcar, as gemas e o café. Adicione farinha e chocolate e mexa bem. Bata as claras e junte à mistura.",
+                ingredientes: ["Farinha de Trigo", "Açúcar", "Café Coado", "Chocolate em Pó", "Ovos"]
+            },
+            {
+                titulo: "Coxinha de Brigadeiro",
+                imagem: "img-receita-coxinha-brigadeiro.png",
+                preparo: "Junte o leite condensado, chocolate em pó e manteiga. Aqueça no fogo baixo. Envolva os morangos e passe no granulado.",
+                ingredientes: ["Leite Condensado", "Chocolage em Pó", "Manteiga", "Morango", "Chocolate Granulado"]
+            }
+        ];
+
+        /*  i) Definir as funções getListaIngredientes e getCard, 
+            ambos com parâmetro receita, 
+            relacionados à estrutura adotada no segmento JSON
+        */
+        const getListaIngredientes = receita => {
+            let r1 = receita.ingredientes.map(ingrediente => '<li>' + ingrediente + '</li>');
+            var r2 = r1.reduce(function (acc, current) {
+                return acc + current;
+            }, '');
+            let html = '<ul class="list-unstyled">' + r2 + '</ul>';
+
+            console.log(r1, r2, html);
+            return html;
+        };
+
+        const getCard = receita => {
+            let html = '<div class="col-12 col-sm-6 col-md-4 col-lg-3"><div class="card h-100"><img src="' +
+                receita.imagem +
+                '" class="card-img-top" alt="' +
+                receita.titulo +
+                '"><div class="card-body"><h5 class="card-title">' +
+                receita.titulo +
+                '</h5 ><p class="card-text">' +
+                receita.preparo +
+                '</p><h6>Ingredientes:</h6>' +
+                getListaIngredientes(receita) +
+                '</div ></div ></div >';
+            return html;
+        };
+
+        /*  j)  Definir a função preencheCatalogo, sem parâmetros, 
+                invocada no evento onload do elemento body
+        */
+        const preencheCatalogo = () => {
+            const pnlCatalogo = document.getElementById("pnlCatalogo");
+            pnlCatalogo.innerHTML = receitas.map(getCard).join("");
+        };
+    </script>
+
+    <!-- Inclusão do Bootstrap JS -->
+    <script src="bs533/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
